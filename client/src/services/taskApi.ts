@@ -1,6 +1,6 @@
 import type { Task } from '../types';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://calendar-ikuo.onrender.com/api';
 
 export async function fetchTasks(month: string): Promise<Task[]> {
   const res = await fetch(`${API_URL}/tasks?month=${month}`);
