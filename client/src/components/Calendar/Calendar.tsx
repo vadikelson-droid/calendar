@@ -10,8 +10,8 @@ import DayCell from './DayCell';
 import { CalendarWrapper, Grid, DayHeader } from './styles';
 
 const Calendar: React.FC = () => {
-  const { year, month, days, monthKey, monthName, goToPrevMonth, goToNextMonth, goToToday } = useCalendar();
-  const { tasks, addTask, editTask, removeTask, reorder, getTasksForDate } = useTasks(monthKey);
+  const { year, days, monthKey, monthName, goToPrevMonth, goToNextMonth, goToToday } = useCalendar();
+  const { addTask, editTask, removeTask, reorder, getTasksForDate } = useTasks(monthKey);
   const [countryCode, setCountryCode] = useState('US');
   const [countries, setCountries] = useState<{ countryCode: string; name: string }[]>([
     { countryCode: 'US', name: 'United States' },
