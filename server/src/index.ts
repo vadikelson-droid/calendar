@@ -30,5 +30,9 @@ mongoose
     console.log('Connected to MongoDB');
   })
   .catch((err) => {
-    console.error('MongoDB connection error:', err);
+    console.error('MongoDB connection error:', err.message);
   });
+
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled rejection:', err);
+});
