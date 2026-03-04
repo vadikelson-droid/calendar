@@ -19,11 +19,11 @@ export const Header = styled.div`
   margin-bottom: 20px;
   gap: 16px;
   flex-wrap: wrap;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
+  background: #FFFFFF;
   padding: 16px 24px;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 `;
 
 export const HeaderLeft = styled.div`
@@ -42,24 +42,25 @@ export const MonthTitle = styled.h2`
   margin: 0;
   font-size: 24px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #1E293B;
   min-width: 220px;
   letter-spacing: -0.5px;
 `;
 
 export const NavButton = styled.button`
-  background: #f0f0f5;
-  border: none;
-  border-radius: 10px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
   padding: 8px 14px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  color: #555;
+  color: #1E293B;
   transition: all 0.2s ease;
   &:hover {
-    background: #e4e4ec;
-    transform: translateY(-1px);
+    background: #EFF6FF;
+    border-color: #3B82F6;
+    color: #3B82F6;
   }
   &:active {
     transform: translateY(0);
@@ -67,87 +68,92 @@ export const NavButton = styled.button`
 `;
 
 export const TodayButton = styled(NavButton)`
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+  background: #3B82F6;
+  border-color: #3B82F6;
+  color: #FFFFFF;
   font-weight: 600;
   padding: 8px 18px;
   &:hover {
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    background: linear-gradient(135deg, #5a72d4, #6a4194);
+    background: #2563EB;
+    border-color: #2563EB;
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
   }
 `;
 
 export const SearchInput = styled.input`
   padding: 8px 16px;
-  border: 2px solid #eee;
-  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
   font-size: 14px;
   width: 220px;
   font-family: inherit;
   transition: all 0.2s ease;
-  background: #f8f8fb;
+  background: #FFFFFF;
+  color: #1E293B;
   &:focus {
     outline: none;
-    border-color: #667eea;
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
   &::placeholder {
-    color: #aaa;
+    color: #94A3B8;
   }
 `;
 
 export const CountrySelect = styled.select`
   padding: 8px 12px;
-  border: 2px solid #eee;
-  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
   cursor: pointer;
-  background: #f8f8fb;
+  background: #FFFFFF;
+  color: #1E293B;
   transition: all 0.2s ease;
   &:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
 `;
 
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
+  background: #FFFFFF;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 `;
 
-export const DayHeader = styled.div`
-  background: linear-gradient(135deg, #667eea, #764ba2);
+export const DayHeader = styled.div<{ $isWeekend?: boolean }>`
+  background: #F8FAFC;
   padding: 12px 8px;
   text-align: center;
   font-weight: 600;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.95);
+  color: ${({ $isWeekend }) => ($isWeekend ? '#F87171' : '#64748B')};
   text-transform: uppercase;
   letter-spacing: 1px;
+  border-bottom: 1px solid #E2E8F0;
 `;
 
-export const DayCellWrapper = styled.div<{ $isCurrentMonth: boolean; $isToday: boolean }>`
+export const DayCellWrapper = styled.div<{ $isCurrentMonth: boolean; $isToday: boolean; $isWeekend?: boolean }>`
   min-height: 130px;
   padding: 6px 8px;
-  border-right: 1px solid #f0f0f5;
-  border-bottom: 1px solid #f0f0f5;
+  border-right: 1px solid #E2E8F0;
+  border-bottom: 1px solid #E2E8F0;
   background: ${({ $isCurrentMonth, $isToday }) =>
     $isToday
-      ? 'linear-gradient(135deg, #fff9e6, #fff3cc)'
+      ? '#DBEAFE'
       : $isCurrentMonth
-      ? '#fff'
-      : '#f8f8fb'};
+      ? '#FFFFFF'
+      : '#F8FAFC'};
   position: relative;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 
   &:nth-child(7n + 7) {
     border-right: none;
@@ -155,44 +161,32 @@ export const DayCellWrapper = styled.div<{ $isCurrentMonth: boolean; $isToday: b
 
   &:hover {
     background: ${({ $isToday }) =>
-      $isToday ? 'linear-gradient(135deg, #fff5d6, #ffedb3)' : '#f3f0ff'};
-    z-index: 1;
+      $isToday ? '#DBEAFE' : '#EFF6FF'};
   }
 
   ${({ $isToday }) =>
     $isToday &&
     `
-    box-shadow: inset 0 0 0 2px #f0a500;
+    box-shadow: inset 0 0 0 2px #3B82F6;
   `}
 `;
 
-export const DayNumber = styled.div<{ $isCurrentMonth: boolean; $isToday: boolean }>`
+export const DayNumber = styled.div<{ $isCurrentMonth: boolean; $isToday: boolean; $isWeekend?: boolean }>`
   font-size: 13px;
   font-weight: ${({ $isToday }) => ($isToday ? '700' : '500')};
-  color: ${({ $isCurrentMonth, $isToday }) =>
-    $isToday ? '#e08800' : $isCurrentMonth ? '#1a1a2e' : '#c0c0d0'};
+  color: ${({ $isCurrentMonth, $isToday, $isWeekend }) =>
+    $isToday ? '#3B82F6' : !$isCurrentMonth ? '#94A3B8' : $isWeekend ? '#F87171' : '#1E293B'};
   margin-bottom: 4px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  ${({ $isToday }) =>
-    $isToday &&
-    `
-    & > span:first-child,
-    &::before {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-  `}
 `;
 
 export const CardCount = styled.span`
   font-size: 10px;
-  color: #a0a0b8;
+  color: #94A3B8;
   font-weight: 500;
-  background: #f0f0f5;
+  background: #F1F5F9;
   padding: 1px 6px;
   border-radius: 8px;
 `;
@@ -212,7 +206,7 @@ export const TaskList = styled.div`
     background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: #d0d0e0;
+    background: #CBD5E1;
     border-radius: 3px;
   }
 `;

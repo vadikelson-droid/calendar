@@ -22,13 +22,13 @@ export const TaskCard = styled.div<{ $color: string; $isDragging?: boolean; $dim
   gap: 4px;
   opacity: ${({ $dimmed }) => ($dimmed ? 0.25 : 1)};
   box-shadow: ${({ $isDragging }) =>
-    $isDragging ? '0 4px 16px rgba(0,0,0,0.25)' : '0 1px 3px rgba(0,0,0,0.12)'};
+    $isDragging ? '0 4px 16px rgba(0,0,0,0.2)' : '0 1px 2px rgba(0,0,0,0.08)'};
   transition: all 0.2s ease;
   animation: ${slideIn} 0.2s ease;
   letter-spacing: 0.1px;
 
   &:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     transform: translateY(-1px);
   }
 
@@ -73,18 +73,22 @@ export const TaskActionBtn = styled.button`
 export const InlineInput = styled.input`
   width: 100%;
   padding: 5px 8px;
-  border: 2px solid #667eea;
-  border-radius: 8px;
+  border: 2px solid #3B82F6;
+  border-radius: 6px;
   font-size: 12px;
   font-family: inherit;
   outline: none;
   box-sizing: border-box;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+  background: #FFFFFF;
+  color: #1E293B;
+  box-shadow: 0 1px 4px rgba(59, 130, 246, 0.15);
   transition: all 0.2s ease;
   &:focus {
-    border-color: #764ba2;
-    box-shadow: 0 2px 12px rgba(118, 75, 162, 0.2);
+    border-color: #2563EB;
+    box-shadow: 0 1px 8px rgba(59, 130, 246, 0.2);
+  }
+  &::placeholder {
+    color: #94A3B8;
   }
 `;
 
@@ -100,13 +104,13 @@ export const ColorDot = styled.button<{ $color: string; $active: boolean }>`
   height: 16px;
   border-radius: 50%;
   background: ${({ $color }) => $color};
-  border: 2px solid ${({ $active }) => ($active ? '#1a1a2e' : 'transparent')};
+  border: 2px solid ${({ $active }) => ($active ? '#1E293B' : 'transparent')};
   cursor: pointer;
   padding: 0;
   transition: all 0.15s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   &:hover {
     transform: scale(1.2);
-    border-color: #1a1a2e;
+    border-color: #1E293B;
   }
 `;

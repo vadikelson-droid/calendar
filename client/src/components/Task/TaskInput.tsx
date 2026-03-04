@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { InlineInput, ColorPicker, ColorDot } from './styles';
 
-const COLORS = ['#4dabf7', '#ff6b6b', '#51cf66', '#fcc419', '#cc5de8', '#ff922b'];
+const COLORS = ['#8B5CF6', '#22C55E', '#F59E0B', '#3B82F6', '#F87171', '#06B6D4'];
 
 interface Props {
   onSubmit: (title: string, color: string) => void;

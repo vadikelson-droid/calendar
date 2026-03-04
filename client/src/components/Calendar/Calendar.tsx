@@ -102,7 +102,7 @@ const Calendar: React.FC = () => {
       />
       <Grid>
         {DAY_NAMES.map((name) => (
-          <DayHeader key={name}>{name}</DayHeader>
+          <DayHeader key={name} $isWeekend={name === 'Sat' || name === 'Sun'}>{name}</DayHeader>
         ))}
         {days.map((day) => (
           <DayCell

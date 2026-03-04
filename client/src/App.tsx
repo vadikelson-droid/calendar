@@ -12,9 +12,9 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #F8FAFC;
     min-height: 100vh;
-    color: #1a1a2e;
+    color: #1E293B;
     -webkit-font-smoothing: antialiased;
   }
 `;
