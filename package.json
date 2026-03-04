@@ -1,0 +1,5 @@
+{
+  "name": "calendar-app",
+  "private": true,
+  "workspaces": ["client", "server"]
+}
