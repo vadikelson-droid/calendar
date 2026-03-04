@@ -1,6 +1,6 @@
 import type { Task } from '../types';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://91.219.61.4/calendar/api';
+const API_URL = import.meta.env.VITE_API_URL || '/calendar/api';
 
 export async function fetchTasks(month: string): Promise<Task[]> {
   const res = await fetch(`${API_URL}/tasks?month=${month}`);
