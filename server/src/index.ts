@@ -3,6 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import taskRoutes from './routes/tasks.js';
+import authRoutes from './routes/auth.js';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/calendar';
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
 app.get('/api/health', (_req, res) => {

@@ -26,15 +26,18 @@ export const TaskCard = styled.div<{ $color: string; $isDragging?: boolean; $dim
   transition: all 0.2s ease;
   animation: ${slideIn} 0.2s ease;
   letter-spacing: 0.1px;
+  user-select: none;
+  -webkit-user-select: none;
 
-  &:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transform: translateY(-1px);
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      transform: translateY(-1px);
+    }
   }
 
   &:active {
     cursor: grabbing;
-    transform: scale(1.02);
   }
 `;
 
@@ -49,7 +52,14 @@ export const TaskActions = styled.div`
   gap: 2px;
   opacity: 0;
   transition: opacity 0.15s ease;
-  ${TaskCard}:hover & {
+
+  @media (hover: hover) {
+    ${TaskCard}:hover & {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
     opacity: 1;
   }
 `;
@@ -64,9 +74,28 @@ export const TaskActionBtn = styled.button`
   line-height: 1;
   border-radius: 3px;
   transition: background 0.15s;
-  &:hover {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+
+  @media (hover: hover) {
+    &:hover {
+      background: rgba(255, 255, 255, 0.35);
+      color: #fff;
+    }
+  }
+  &:active {
     background: rgba(255, 255, 255, 0.35);
-    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    padding: 4px 8px;
+    font-size: 14px;
+    min-width: 28px;
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -75,7 +104,7 @@ export const InlineInput = styled.input`
   padding: 5px 8px;
   border: 2px solid #3B82F6;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 16px;
   font-family: inherit;
   outline: none;
   box-sizing: border-box;
@@ -109,8 +138,19 @@ export const ColorDot = styled.button<{ $color: string; $active: boolean }>`
   padding: 0;
   transition: all 0.15s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  &:hover {
-    transform: scale(1.2);
-    border-color: #1E293B;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: scale(1.2);
+      border-color: #1E293B;
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: 24px;
+    height: 24px;
   }
 `;

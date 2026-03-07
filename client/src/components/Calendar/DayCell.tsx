@@ -5,6 +5,12 @@ import TaskItem from '../Task/TaskItem';
 import TaskInput from '../Task/TaskInput';
 import HolidayBadge from '../Holiday/HolidayBadge';
 
+interface TouchDrag {
+  handleTouchStart: (e: React.TouchEvent, task: Task) => void;
+  handleTouchMove: (e: React.TouchEvent) => void;
+  handleTouchEnd: (e: React.TouchEvent) => void;
+}
+
 interface Props {
   day: DayData;
   tasks: Task[];
@@ -17,6 +23,7 @@ interface Props {
   onDragEnd: (e: React.DragEvent) => void;
   onDragOver: (e: React.DragEvent) => void;
   onDrop: (e: React.DragEvent, date: string, dropIndex: number) => void;
+  touchDrag: TouchDrag;
 }
 
 const DayCell: React.FC<Props> = ({
@@ -31,6 +38,7 @@ const DayCell: React.FC<Props> = ({
   onDragEnd,
   onDragOver,
   onDrop,
+  touchDrag,
 }) => {
   const [showInput, setShowInput] = useState(false);
 
@@ -63,6 +71,7 @@ const DayCell: React.FC<Props> = ({
     <DayCellWrapper
       $isCurrentMonth={day.isCurrentMonth}
       $isToday={day.isToday}
+      data-drop-date={day.date}
       onClick={handleCellClick}
       onDragOver={onDragOver}
       onDrop={handleDrop}
@@ -86,6 +95,9 @@ const DayCell: React.FC<Props> = ({
                 e.stopPropagation();
               }}
               onDrop={(e) => handleTaskDrop(e, index)}
+              onTouchStart={(e) => touchDrag.handleTouchStart(e, task)}
+              onTouchMove={touchDrag.handleTouchMove}
+              onTouchEnd={touchDrag.handleTouchEnd}
             >
               <TaskItem
                 task={task}

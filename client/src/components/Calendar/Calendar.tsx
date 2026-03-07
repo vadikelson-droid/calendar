@@ -1,17 +1,25 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import type { Task } from '../../types';
 import { useCalendar } from '../../hooks/useCalendar';
 import { useTasks } from '../../hooks/useTasks';
 import { useHolidays } from '../../hooks/useHolidays';
+import { useTouchDrag } from '../../hooks/useTouchDrag';
 import { fetchAvailableCountries } from '../../services/holidayApi';
 import { DAY_NAMES } from '../../utils/calendar';
-import CalendarHeader from './CalendarHeader';
+import CalendarHeader, { formatTaskDate } from './CalendarHeader';
+import type { ViewMode } from './CalendarHeader';
 import DayCell from './DayCell';
+import ListView from './ListView';
 import { CalendarWrapper, Grid, DayHeader } from './styles';
 
-const Calendar: React.FC = () => {
+interface CalendarProps {
+  username: string;
+  onLogout: () => void;
+}
+
+const Calendar: React.FC<CalendarProps> = ({ username, onLogout }) => {
   const { year, days, monthKey, monthName, goToPrevMonth, goToNextMonth, goToToday } = useCalendar();
-  const { addTask, editTask, removeTask, reorder, getTasksForDate } = useTasks(monthKey);
+  const { tasks, addTask, editTask, removeTask, reorder, getTasksForDate } = useTasks(monthKey);
   const [countryCode, setCountryCode] = useState('US');
   const [countries, setCountries] = useState<{ countryCode: string; name: string }[]>([
     { countryCode: 'US', name: 'United States' },
@@ -20,9 +28,25 @@ const Calendar: React.FC = () => {
     { countryCode: 'DE', name: 'Germany' },
   ]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    return window.innerWidth <= 768 ? 'list' : 'grid';
+  });
   const { getHolidaysForDate } = useHolidays(year, countryCode);
 
   const dragTaskRef = useRef<Task | null>(null);
+  const touchDrag = useTouchDrag({ getTasksForDate, reorder });
+
+  const searchResults = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return [];
+    return tasks
+      .filter((t) => t.title.toLowerCase().includes(q))
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .map((task) => ({
+        task,
+        dateFormatted: formatTaskDate(task.date),
+      }));
+  }, [tasks, searchQuery]);
 
   useEffect(() => {
     fetchAvailableCountries().then((data) => {
@@ -60,22 +84,18 @@ const Calendar: React.FC = () => {
         ? sourceTasks
         : getTasksForDate(targetDate);
 
-      // Insert at drop position
       const newTargetTasks = [...targetTasks];
       const insertIdx = Math.min(dropIndex, newTargetTasks.length);
       newTargetTasks.splice(insertIdx, 0, { ...draggedTask, date: targetDate });
 
-      // Build reorder data
       const reorderData: { id: string; date: string; order: number }[] = [];
 
-      // Update source day if moved to different day
       if (!isSameDay) {
         sourceTasks.forEach((t, i) => {
           reorderData.push({ id: t._id, date: draggedTask.date, order: i });
         });
       }
 
-      // Update target day
       newTargetTasks.forEach((t, i) => {
         reorderData.push({ id: t._id, date: targetDate, order: i });
       });
@@ -94,33 +114,56 @@ const Calendar: React.FC = () => {
         searchQuery={searchQuery}
         countryCode={countryCode}
         countries={countries}
+        viewMode={viewMode}
+        searchResults={searchResults}
         onPrevMonth={goToPrevMonth}
         onNextMonth={goToNextMonth}
         onToday={goToToday}
         onSearchChange={setSearchQuery}
         onCountryChange={setCountryCode}
+        onViewModeChange={setViewMode}
+        username={username}
+        onLogout={onLogout}
       />
-      <Grid>
-        {DAY_NAMES.map((name) => (
-          <DayHeader key={name} $isWeekend={name === 'Sat' || name === 'Sun'}>{name}</DayHeader>
-        ))}
-        {days.map((day) => (
-          <DayCell
-            key={day.date}
-            day={day}
-            tasks={getTasksForDate(day.date)}
-            holidays={getHolidaysForDate(day.date)}
-            searchQuery={searchQuery}
-            onAddTask={handleAddTask}
-            onEditTask={editTask}
-            onDeleteTask={removeTask}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-          />
-        ))}
-      </Grid>
+      {viewMode === 'grid' ? (
+        <Grid>
+          {DAY_NAMES.map((name) => (
+            <DayHeader key={name} $isWeekend={name === 'Sat' || name === 'Sun'}>{name}</DayHeader>
+          ))}
+          {days.map((day) => (
+            <DayCell
+              key={day.date}
+              day={day}
+              tasks={getTasksForDate(day.date)}
+              holidays={getHolidaysForDate(day.date)}
+              searchQuery={searchQuery}
+              onAddTask={handleAddTask}
+              onEditTask={editTask}
+              onDeleteTask={removeTask}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              touchDrag={touchDrag}
+            />
+          ))}
+        </Grid>
+      ) : (
+        <ListView
+          days={days}
+          getTasksForDate={getTasksForDate}
+          getHolidaysForDate={getHolidaysForDate}
+          searchQuery={searchQuery}
+          onAddTask={handleAddTask}
+          onEditTask={editTask}
+          onDeleteTask={removeTask}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          touchDrag={touchDrag}
+        />
+      )}
     </CalendarWrapper>
   );
 };

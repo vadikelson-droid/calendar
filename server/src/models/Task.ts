@@ -5,6 +5,7 @@ export interface ITask extends Document {
   date: string; // "YYYY-MM-DD"
   order: number;
   color: string;
+  userId: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,8 +16,11 @@ const TaskSchema = new Schema<ITask>(
     date: { type: String, required: true, index: true },
     order: { type: Number, default: 0 },
     color: { type: String, default: '#4dabf7' },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
   },
   { timestamps: true }
 );
+
+TaskSchema.index({ userId: 1, date: 1 });
 
 export default mongoose.model<ITask>('Task', TaskSchema);
